@@ -1,6 +1,6 @@
-import * as util from '../util/investment'
-export default function Results({ results,investedCapital }) {
-
+import * as util from "../util/investment";
+export default function Results({ userInput }) {
+  const  results = util.calculateInvestmentResults(userInput);
   return (
     <table id="result">
       <thead>
@@ -15,11 +15,11 @@ export default function Results({ results,investedCapital }) {
       <tbody>
         {results.map((result) => (
           <tr key={result.year}>
-            <td>{util.formatter.format(result.year)}</td>
+            <td>{result.year}</td>
             <td>{util.formatter.format(result.interest)}</td>
             <td>{util.formatter.format(result.valueEndOfYear)}</td>
             <td>{util.formatter.format(result.annualInvestment)}</td>
-            <td>{util.formatter.format(investedCapital)}</td>
+            <td>{util.formatter.format(userInput.initialInvestment)}</td>
           </tr>
         ))}
       </tbody>
