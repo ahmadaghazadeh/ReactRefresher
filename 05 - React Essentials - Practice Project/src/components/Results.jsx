@@ -1,6 +1,6 @@
-import * as util from "../util/investment";
+import { calculateInvestmentResults, formatter } from "../util/investment";
 export default function Results({ userInput }) {
-  const  results = util.calculateInvestmentResults(userInput);
+  const results = calculateInvestmentResults(userInput);
   return (
     <table id="result">
       <thead>
@@ -13,15 +13,24 @@ export default function Results({ userInput }) {
         </tr>
       </thead>
       <tbody>
-        {results.map((result) => (
-          <tr key={result.year}>
-            <td>{result.year}</td>
-            <td>{util.formatter.format(result.interest)}</td>
-            <td>{util.formatter.format(result.valueEndOfYear)}</td>
-            <td>{util.formatter.format(result.annualInvestment)}</td>
-            <td>{util.formatter.format(userInput.initialInvestment)}</td>
-          </tr>
-        ))}
+        {results.map((result) => {
+          const totalInvestment =
+            result.valueEndOfYear -
+            result.annualInvestment * result.year -
+            userInput.initialInvestment;
+
+          const investedCapital =
+            result.valueEndOfYear - totalInvestment;
+          return (
+            <tr key={result.year}>
+              <td>{result.year}</td>
+              <td>{formatter.format(result.interest)}</td>
+              <td>{formatter.format(result.valueEndOfYear)}</td>
+              <td>{formatter.format(totalInvestment)}</td>
+              <td>{formatter.format(investedCapital)}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
